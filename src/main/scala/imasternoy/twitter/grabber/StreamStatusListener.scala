@@ -1,8 +1,13 @@
 package imasternoy.twitter.grabber
 
 import twitter4j.StatusListener
+import imasternoy.twitter.grabber.Domain.RawTweet
+import org.slf4j.LoggerFactory
 
 class StreamStatusListener extends StatusListener {
+  val logger = LoggerFactory.getLogger(classOf[StreamStatusListener])
+
+  val tweetRepo: TweetsRepo = new TweetsRepo;
 
   override def onStatus(status: twitter4j.Status): Unit = {
 
@@ -11,15 +16,19 @@ class StreamStatusListener extends StatusListener {
     val profileLocation = user.getLocation
     val tweetId = status.getId
     val content = status.getText
-    
-    
+
+    tweetRepo.saveRawTweet(RawTweet(status.getId, status.getUser.getScreenName, status.getText))
     println(content + "\n");
 
   }
 
-  override def onDeletionNotice(status: twitter4j.StatusDeletionNotice): Unit = ???
-  override def onScrubGeo(latitude: Long, longtitude: Long): Unit = ???
-  override def onStallWarning(warning: twitter4j.StallWarning): Unit = ???
-  override def onTrackLimitationNotice(status: Int): Unit = ???
-  override def onException(e: Exception): Unit = ???
+  override def onDeletionNotice(status: twitter4j.StatusDeletionNotice): Unit = logger.warn("Status deletion notice statId {}, userId {}", status.getStatusId, status.getUserId)
+
+  override def onScrubGeo(latitude: Long, longtitude: Long): Unit = logger.info("Scrub GEO x: {}, y: {}", latitude, longtitude)
+
+  override def onStallWarning(warning: twitter4j.StallWarning): Unit = logger.warn("Twtitter Stall Warning {}", warning.getMessage)
+
+  override def onTrackLimitationNotice(status: Int): Unit = logger.error("Twtitter limitation Notice {}", status)
+
+  override def onException(e: Exception): Unit = logger.error("Twtitter listener error: ", e)
 }

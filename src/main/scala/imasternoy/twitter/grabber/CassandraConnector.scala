@@ -25,7 +25,11 @@ object CassandraConnector {
     session.execute("CREATE TABLE IF NOT EXISTS "+CASSANDRA_KEYSPACE+"."+DICTIONARY+" ( word text, PRIMARY KEY (word));");
     
   }
-    
+  
+  def shutdown: Unit = {
+    session.close()
+    cluster.close()
+  }
     
   
 }

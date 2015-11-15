@@ -7,16 +7,18 @@ import com.datastax.driver.core.Row
 
 class TweetsRepo {
 
+  CassandraConnector.connect
+
   val INSERT_RAW_TWEET = CassandraConnector.session.prepare("INSERT INTO " + CassandraConnector.CASSANDRA_KEYSPACE + "."
-    + CassandraConnector.RAW_TWEET_DATA
+    + CassandraConnector.RAW_TWEET_DATA + " (id,user,msg)"
     + " VALUES (?,?,?);")
 
   val INSERT_TWEET = CassandraConnector.session.prepare("INSERT INTO " + CassandraConnector.CASSANDRA_KEYSPACE + "."
-    + CassandraConnector.PROCESSED_TWEET_DATA
+    + CassandraConnector.PROCESSED_TWEET_DATA + " (id,user,csvWords)"
     + " VALUES (?,?,?);")
 
   val INSERT_WORD = CassandraConnector.session.prepare("INSERT INTO " + CassandraConnector.CASSANDRA_KEYSPACE + "."
-    + CassandraConnector.DICTIONARY
+    + CassandraConnector.DICTIONARY + " (word)"
     + " VALUES (?);")
 
   val GET_RAW_TWEETS = "SELECT * FROM " + CassandraConnector.CASSANDRA_KEYSPACE + "." + CassandraConnector.RAW_TWEET_DATA;
@@ -26,10 +28,10 @@ class TweetsRepo {
   val GET_WORDS = "SELECT * FROM " + CassandraConnector.CASSANDRA_KEYSPACE + "." + CassandraConnector.DICTIONARY;
 
   val GET_RAW_TWEET_BY_ID = CassandraConnector.session.prepare("SELECT * FROM " + CassandraConnector.CASSANDRA_KEYSPACE + "." + CassandraConnector.RAW_TWEET_DATA +
-    "WHERE id = ?;");
+    " WHERE id = ?;");
 
   val GET_PROCESSED_TWEET_BY_ID = CassandraConnector.session.prepare("SELECT * FROM " + CassandraConnector.CASSANDRA_KEYSPACE + "." + CassandraConnector.PROCESSED_TWEET_DATA +
-    "WHERE id = ?;");
+    " WHERE id = ?;");
 
   def saveRawTweet(tweet: RawTweet): Unit = {
     val bounded = INSERT_RAW_TWEET.bind(new java.lang.Long(tweet.id), tweet.user, tweet.msg);
