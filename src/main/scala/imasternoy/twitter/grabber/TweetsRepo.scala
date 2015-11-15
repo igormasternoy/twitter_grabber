@@ -4,33 +4,33 @@ import imasternoy.twitter.grabber.Domain._
 import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.datastax.driver.core.ResultSet
 import com.datastax.driver.core.Row
-
+import imasternoy.twitter.utils.PreferenceManager._
 class TweetsRepo {
 
   CassandraConnector.connect
 
-  val INSERT_RAW_TWEET = CassandraConnector.session.prepare("INSERT INTO " + CassandraConnector.CASSANDRA_KEYSPACE + "."
-    + CassandraConnector.RAW_TWEET_DATA + " (id,user,msg)"
+  val INSERT_RAW_TWEET = CassandraConnector.session.prepare("INSERT INTO " + CASSANDRA_KEYSPACE + "."
+    + TABLE_RAW_TWEET_DATA + " (id,user,msg)"
     + " VALUES (?,?,?);")
 
-  val INSERT_TWEET = CassandraConnector.session.prepare("INSERT INTO " + CassandraConnector.CASSANDRA_KEYSPACE + "."
-    + CassandraConnector.PROCESSED_TWEET_DATA + " (id,user,csvWords)"
+  val INSERT_TWEET = CassandraConnector.session.prepare("INSERT INTO " + CASSANDRA_KEYSPACE + "."
+    + TABLE_PROCESSED_TWEET_DATA + " (id,user,csvWords)"
     + " VALUES (?,?,?);")
 
-  val INSERT_WORD = CassandraConnector.session.prepare("INSERT INTO " + CassandraConnector.CASSANDRA_KEYSPACE + "."
-    + CassandraConnector.DICTIONARY + " (word)"
+  val INSERT_WORD = CassandraConnector.session.prepare("INSERT INTO " + CASSANDRA_KEYSPACE + "."
+    + TABLE_DICTIONARY + " (word)"
     + " VALUES (?);")
 
-  val GET_RAW_TWEETS = "SELECT * FROM " + CassandraConnector.CASSANDRA_KEYSPACE + "." + CassandraConnector.RAW_TWEET_DATA;
+  val GET_RAW_TWEETS = "SELECT * FROM " + CASSANDRA_KEYSPACE + "." + TABLE_RAW_TWEET_DATA;
 
-  val GET_PROCESSET_TWEETS = "SELECT * FROM " + CassandraConnector.CASSANDRA_KEYSPACE + "." + CassandraConnector.PROCESSED_TWEET_DATA;
+  val GET_PROCESSET_TWEETS = "SELECT * FROM " + CASSANDRA_KEYSPACE + "." + TABLE_PROCESSED_TWEET_DATA;
 
-  val GET_WORDS = "SELECT * FROM " + CassandraConnector.CASSANDRA_KEYSPACE + "." + CassandraConnector.DICTIONARY;
+  val GET_WORDS = "SELECT * FROM " + CASSANDRA_KEYSPACE + "." + TABLE_DICTIONARY;
 
-  val GET_RAW_TWEET_BY_ID = CassandraConnector.session.prepare("SELECT * FROM " + CassandraConnector.CASSANDRA_KEYSPACE + "." + CassandraConnector.RAW_TWEET_DATA +
+  val GET_RAW_TWEET_BY_ID = CassandraConnector.session.prepare("SELECT * FROM " + CASSANDRA_KEYSPACE + "." + TABLE_RAW_TWEET_DATA +
     " WHERE id = ?;");
 
-  val GET_PROCESSED_TWEET_BY_ID = CassandraConnector.session.prepare("SELECT * FROM " + CassandraConnector.CASSANDRA_KEYSPACE + "." + CassandraConnector.PROCESSED_TWEET_DATA +
+  val GET_PROCESSED_TWEET_BY_ID = CassandraConnector.session.prepare("SELECT * FROM " + CASSANDRA_KEYSPACE + "." + TABLE_PROCESSED_TWEET_DATA +
     " WHERE id = ?;");
 
   def saveRawTweet(tweet: RawTweet): Unit = {

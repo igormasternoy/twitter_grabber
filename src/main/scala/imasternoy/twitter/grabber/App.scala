@@ -8,19 +8,17 @@ import twitter4j.TwitterStream
 import twitter4j.FilterQuery
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import imasternoy.twitter.utils.PreferenceManager._
+import imasternoy.twitter.utils.PreferenceManager
+import java.util.Arrays
+import java.util.Collections
+import scala.collection.JavaConversions
+import java.util.ArrayList
 
 /**
  * @author ${user.name}
  */
 object App {
-  val exitKey = "q"
-  val consumerKey = "B1TDpGvlzjjULa0r1AKdLF6k8"
-  val consumerSecret = "ZIrU9vxKB0TIUric0Ws8bcrPO3H64ZvTbfykaaMeHfmF2F4aPy"
-  val accessToken = "2219287969-nxMqxXELAByfD5OlMpgfQpRCRo5XaMpon7SVc3t"
-  val accessTokenSecret = "qzOwEzcZjs0y0oK94oT12PyyK6r8BGUOZvaXHbrUGMKqK"
-
-//  val FILTER_WORDS = { "україна"; "Україна" }
-    val FILTER_WORDS = { "порошенко"; "україна"; "Україна" }
 
   var twitterStream: TwitterStream = null;
 
@@ -29,20 +27,21 @@ object App {
     println("To exit jsut press 'q' key\n")
     thread.start()
 
+    PreferenceManager.init
+
     val cb = new ConfigurationBuilder()
     cb.setDebugEnabled(true)
-      .setOAuthConsumerKey(consumerKey)
-      .setOAuthConsumerSecret(consumerSecret)
-      .setOAuthAccessToken(accessToken)
-      .setOAuthAccessTokenSecret(accessTokenSecret)
+      .setOAuthConsumerKey(PreferenceManager.CONSUMER_KEY)
+      .setOAuthConsumerSecret(PreferenceManager.CONSUMER_SECRET)
+      .setOAuthAccessToken(PreferenceManager.ACCESS_TOKEN)
+      .setOAuthAccessTokenSecret(PreferenceManager.ACCESS_TOKEN)
 
-    twitterStream = new TwitterStreamFactory(cb.build()).getInstance
+    //    twitterStream = new TwitterStreamFactory(cb.build()).getInstance
 
     val fq = new FilterQuery()
-    fq.track(FILTER_WORDS)
 
-    twitterStream.addListener(new StreamStatusListener);
-    twitterStream.filter(fq)
+    fq.track(args: _*)
+    println("Filtered words are: " + args.foreach { println(_) })
   }
 
   val thread = new Thread {
@@ -50,7 +49,7 @@ object App {
       val in = new BufferedReader(new InputStreamReader(System.in));
       var line = "";
 
-      while (line.equalsIgnoreCase(exitKey) == false) {
+      while (line.equalsIgnoreCase("q") == false) {
         line = in.readLine()
         CassandraConnector.shutdown
         twitterStream.shutdown()
