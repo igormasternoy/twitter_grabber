@@ -19,7 +19,8 @@ import java.util.ArrayList
  * @author ${user.name}
  */
 object App {
-
+  val TEST_FILTER_WORDS = ("порошенко","україна")
+  
   var twitterStream: TwitterStream = null;
 
   def main(args: Array[String]) {
@@ -34,13 +35,15 @@ object App {
       .setOAuthConsumerKey(PreferenceManager.CONSUMER_KEY)
       .setOAuthConsumerSecret(PreferenceManager.CONSUMER_SECRET)
       .setOAuthAccessToken(PreferenceManager.ACCESS_TOKEN)
-      .setOAuthAccessTokenSecret(PreferenceManager.ACCESS_TOKEN)
+      .setOAuthAccessTokenSecret(PreferenceManager.ACCESS_TOKEN_SECRET)
 
-    //    twitterStream = new TwitterStreamFactory(cb.build()).getInstance
-
+    twitterStream = new TwitterStreamFactory(cb.build()).getInstance
+    twitterStream.addListener(new StreamStatusListener());
+    
     val fq = new FilterQuery()
-
-    fq.track(args: _*)
+    fq.track("україна");
+    twitterStream.filter(fq);
+//    fq.track(args: _*)
     println("Filtered words are: " + args.foreach { println(_) })
   }
 
@@ -51,7 +54,7 @@ object App {
 
       while (line.equalsIgnoreCase("q") == false) {
         line = in.readLine()
-        CassandraConnector.shutdown
+//        CassandraConnector.shutdown
         twitterStream.shutdown()
         Thread.sleep(1000);
         System.exit(0);

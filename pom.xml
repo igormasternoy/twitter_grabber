@@ -5,25 +5,41 @@
 	<artifactId>twitter_grabber</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
-	<description>My wonderfull scala app</description>
+	<description>Sentimental Twitter messages processor</description>
 	<inceptionYear>2015</inceptionYear>
-	<licenses>
-		<license>
-			<name>My License</name>
-			<url>http://....</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
 
 	<properties>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<encoding>UTF-8</encoding>
-		<scala.version>2.11.5</scala.version>
+		<scala.version>2.11.0</scala.version>
 		<scala.compat.version>2.11</scala.compat.version>
+		<jython.standalone>2.5.2</jython.standalone>
+		<nd4j.version>0.4-rc3.6</nd4j.version>
+		<dl4j.version>0.4-rc3.7</dl4j.version>
+		<cassandra-driver-core>2.1.9</cassandra-driver-core>
+		<twitter4j-core>4.0.4</twitter4j-core>
+		<org.slf4j>1.7.5</org.slf4j>
 	</properties>
 
 	<dependencies>
+		<!-- Word 2 Vec -->
+	<!-- 	<dependency>
+			<groupId>org.deeplearning4j</groupId>
+			<artifactId>deeplearning4j-ui</artifactId>
+			<version>${dl4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.deeplearning4j</groupId>
+			<artifactId>deeplearning4j-nlp</artifactId>
+			<version>${dl4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nd4j</groupId>
+			<artifactId>nd4j-jblas</artifactId>
+			<version>${nd4j.version}</version>
+		</dependency> -->
+		<!-- Scala -->
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
@@ -34,13 +50,13 @@
 		<dependency>
 			<groupId>com.datastax.cassandra</groupId>
 			<artifactId>cassandra-driver-core</artifactId>
-			<version>2.1.9</version>
+			<version>${cassandra-driver-core}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.datastax.cassandra</groupId>
 			<artifactId>cassandra-driver-mapping</artifactId>
-			<version>2.1.9</version>
+			<version>${cassandra-driver-core}</version>
 		</dependency>
 
 		<!-- Twitter -->
@@ -48,13 +64,13 @@
 		<dependency>
 			<groupId>org.twitter4j</groupId>
 			<artifactId>twitter4j-core</artifactId>
-			<version>4.0.4</version>
+			<version>${twitter4j-core}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.twitter4j</groupId>
 			<artifactId>twitter4j-stream</artifactId>
-			<version>4.0.4</version>
+			<version>${twitter4j-core}</version>
 		</dependency>
 
 
@@ -77,6 +93,24 @@
 			<version>2.2.4</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- Logs -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.4.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

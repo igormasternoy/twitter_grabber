@@ -3,11 +3,16 @@ package imasternoy.twitter.grabber
 import twitter4j.StatusListener
 import imasternoy.twitter.grabber.Domain.RawTweet
 import org.slf4j.LoggerFactory
+import imasternoy.twitter.processor.MessageProcessor
+import scala.concurrent.ExecutionContext
 
 class StreamStatusListener extends StatusListener {
   val logger = LoggerFactory.getLogger(classOf[StreamStatusListener])
 
-  val tweetRepo: TweetsRepo = new TweetsRepo;
+  //  val tweetRepo: TweetsRepo = new TweetsRepo;
+
+  val wordProcessor: MessageProcessor = new MessageProcessor;
+  wordProcessor.init
 
   override def onStatus(status: twitter4j.Status): Unit = {
 
@@ -16,9 +21,10 @@ class StreamStatusListener extends StatusListener {
     val profileLocation = user.getLocation
     val tweetId = status.getId
     val content = status.getText
-
-    tweetRepo.saveRawTweet(RawTweet(status.getId, status.getUser.getScreenName, status.getText))
-    println(content + "\n");
+    import ExecutionContext.Implicits.global
+//    logger.info("Processed tweet {}", content);
+    //    tweetRepo.saveRawTweet(RawTweet(status.getId, status.getUser.getScreenName, status.getText))
+    wordProcessor.processMessage(content).map(content => logger.info("Processed tweet {}", content))
 
   }
 
