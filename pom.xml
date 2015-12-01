@@ -12,7 +12,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<encoding>UTF-8</encoding>
-		<scala.version>2.11.0</scala.version>
+		<scala.version>2.11.6</scala.version>
 		<scala.compat.version>2.11</scala.compat.version>
 		<jython.standalone>2.5.2</jython.standalone>
 		<nd4j.version>0.4-rc3.6</nd4j.version>
@@ -24,7 +24,7 @@
 
 	<dependencies>
 		<!-- Word 2 Vec -->
-	<!-- 	<dependency>
+		<dependency>
 			<groupId>org.deeplearning4j</groupId>
 			<artifactId>deeplearning4j-ui</artifactId>
 			<version>${dl4j.version}</version>
@@ -38,14 +38,14 @@
 			<groupId>org.nd4j</groupId>
 			<artifactId>nd4j-jblas</artifactId>
 			<version>${nd4j.version}</version>
-		</dependency> -->
+		</dependency>
 		<!-- Scala -->
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
 			<version>${scala.version}</version>
 		</dependency>
-
+ -->
 		<!-- Cassandra -->
 		<dependency>
 			<groupId>com.datastax.cassandra</groupId>
@@ -74,25 +74,6 @@
 		</dependency>
 
 
-		<!-- Test -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.specs2</groupId>
-			<artifactId>specs2-core_${scala.compat.version}</artifactId>
-			<version>2.4.16</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.scalatest</groupId>
-			<artifactId>scalatest_${scala.compat.version}</artifactId>
-			<version>2.2.4</version>
-			<scope>test</scope>
-		</dependency>
 		<!-- Logs -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -130,7 +111,7 @@
 						</goals>
 						<configuration>
 							<args>
-								<arg>-make:transitive</arg>
+								<!-- <arg>-make:transitive</arg> -->
 								<arg>-dependencyfile</arg>
 								<arg>${project.build.directory}/.scala_dependencies</arg>
 							</args>
